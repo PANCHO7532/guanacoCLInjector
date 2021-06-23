@@ -59,8 +59,13 @@ const server = sv5.createServer((connectionInfo, accept, deny) => {
             const clientStream = accept(true);
             //clientStream.pipe(incomingStream).pipe(clientStream); //pipe sucks, lemme tell ya.
             if(clientStream) {
-                clientStream.pipe(incomingStream);
-                incomingStream.pipe(clientStream);
+                try {
+                    clientStream.pipe(incomingStream);
+                    incomingStream.pipe(clientStream);
+                } catch(err) {
+                    console.log("[SSH-PIPEERR] " + err);
+                } 
+                
             }
         });
     } catch(error) {

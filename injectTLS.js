@@ -53,13 +53,22 @@ tlsSocket.on("secureConnect", () => {
         socket.on("data", function(data) {
             tlsSocket.write(data);
         });
+        socket.on("error", function(error) {
+            console.log("[CLSOCK-ERR] " + error);
+        });
         tlsSocket.on("data", function(data) {
-            if(!firstResponse) { console.log("[TLS] " + data.toString().substring(0, data.toString().indexOf("\n"))); firstResponse = true;}
+            if(!firstResponse && data.toString().indexOf("SSH-") == -1) { console.log("[TLS] " + data.toString().substring(0, data.toString().indexOf("\n"))); firstResponse = true;}
             socket.write(data);
         });
+        tlsSocket.on("error", function(error) {
+            console.log("[TLS-ERR] " + error);
+        });
     });
-
-})
+    server.on("error", (err) => {
+        console.log("[CLSV-ERR] " + err);
+    });
+});
 tlsSocket.on("error", function(error) {
-    console.log(error);
+    //it is necessary? It may duplicate the error message
+    console.log("[TLS-ERR] " + error);
 });

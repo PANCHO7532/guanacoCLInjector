@@ -35,12 +35,21 @@ externalConnection.on("connect", () => {
     sshModule.connectSSH(sshUser, sshPass);
     externalConnection.write(payload);
 });
+externalConnection.on("error", (err) => {
+    console.log("[EXTCONN] " + err);
+});
 server.on("connection", (socket) => {
     socket.on("data", function(data) {
         externalConnection.write(data);
+    });
+    socket.on("error", function(err) {
+        console.log("[CLSOCK-ERR] " + err);
     });
     externalConnection.on("data", function(data) {
         if(!firstResponse && data.toString().indexOf("SSH-") == -1) { console.log("[TCP] " + data.toString().substring(0, data.toString().indexOf("\n"))); firstResponse = true;} else { firstResponse = true }
         socket.write(data);
     });
+});
+server.on("error", (err) => {
+    console.log("[CLSV-ERR] " + err);
 });

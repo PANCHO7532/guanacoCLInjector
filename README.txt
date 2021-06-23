@@ -1,3 +1,5 @@
+This project uses Node.JS, install it from here: https://nodejs.org/en/download/
+
 How to use:
 0) Execute install-dep correspondent to your system for install dependencies (a few)
 1) Fill and modify config.json with your SSH provider data

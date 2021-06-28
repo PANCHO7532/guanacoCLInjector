@@ -1,6 +1,6 @@
 /*
  * /=======================================================\
- * | GuanacoCLInjector v0.1.1a                             |
+ * | GuanacoCLInjector v0.0.2a                             |
  * | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
  * |=======================================================/
  * |-> Purpose: SSH/TLS Injection module

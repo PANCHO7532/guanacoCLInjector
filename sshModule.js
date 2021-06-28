@@ -1,11 +1,11 @@
 /*
-* /=======================================================\
-* | GuanacoCLInjector v0.0.2a                             |
-* | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
-* |=======================================================/
-* |-> Purpose: Main SSH Module
-* ---------------------------------------------------------
-*/
+ * /=======================================================\
+ * | GuanacoCLInjector v0.0.2a                             |
+ * | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
+ * |=======================================================/
+ * |-> Purpose: Main SSH Module
+ * ---------------------------------------------------------
+ */
 const {inspect} = require("util");
 const sv5 = require("socksv5");
 const ssh2 = require("ssh2");

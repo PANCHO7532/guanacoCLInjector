@@ -1,11 +1,11 @@
 /*
-* /=======================================================\
-* | GuanacoCLInjector v0.0.2a                             |
-* | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
-* |=======================================================/
-* |-> Purpose: Direct SSH Injection module
-* ---------------------------------------------------------
-*/
+ * /=======================================================\
+ * | GuanacoCLInjector v0.0.2a                             |
+ * | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
+ * |=======================================================/
+ * |-> Purpose: Direct SSH Injection module
+ * ---------------------------------------------------------
+ */
 const {inspect} = require("util");
 const sshModule = require("./sshModule");
 const net = require("net");

@@ -65,7 +65,8 @@ const server = sv5.createServer((connectionInfo, accept, deny) => {
                 } catch(err) {
                     console.log("[SSH-PIPEERR] " + err);
                 } 
-                
+                clientStream.on("error", function(err) { console.log("[CSTREAM] " + err) });
+                incomingStream.on("error", function(err) { console.log("[ISTREAM] " + err)});
             }
         });
     } catch(error) {

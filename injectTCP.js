@@ -1,11 +1,10 @@
 /*
-* /=====================================================\
-* | GuanacoCLInjector v0.1a                             |
-* | Copyright (c) P7COMunications LLC 2021 - PANCHO7532 |
-* \=====================================================/
-* -------------------------------------------
-* [>] Purpose: Direct SSH Injection module
-* -------------------------------------------
+* /=======================================================\
+* | GuanacoCLInjector v0.0.2a                             |
+* | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
+* |=======================================================/
+* |-> Purpose: Direct SSH Injection module
+* ---------------------------------------------------------
 */
 const {inspect} = require("util");
 const sshModule = require("./sshModule");
@@ -24,7 +23,7 @@ const sshUser = configFile["username"];
 const sshPass = configFile["password"];
 const payload = configFile["payload"];
 let firstResponse = false;
-const server = net.createServer().listen(8899, () => {
+const server = net.createServer().listen(configFile["backendPort"], () => {
     console.log("[INFO] Backend server started!")
 });
 let externalConnection = net.createConnection({host: sshHost, port: sshPort});
@@ -32,7 +31,7 @@ externalConnection.on("connect", () => {
     console.log("[TCP] Connected to " + sshHost + ":" + sshPort);
     console.log("[TCP] Sending payload...");
     console.log("[TCP] " + payload);
-    sshModule.connectSSH(sshUser, sshPass);
+    sshModule.connectSSH(sshUser, sshPass, configFile["backendPort"]);
     externalConnection.write(payload);
 });
 externalConnection.on("error", (err) => {

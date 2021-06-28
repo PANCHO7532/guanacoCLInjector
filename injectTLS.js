@@ -1,12 +1,11 @@
 /*
-* /=====================================================\
-* | GuanacoCLInjector v0.1a                             |
-* | Copyright (c) P7COMunications LLC 2021 - PANCHO7532 |
-* \=====================================================/
-* -------------------------------------------
-* [>] Purpose: SSH/TLS Injection module
-* -------------------------------------------
-*/
+ * /=======================================================\
+ * | GuanacoCLInjector v0.1.1a                             |
+ * | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
+ * |=======================================================/
+ * |-> Purpose: SSH/TLS Injection module
+ * ---------------------------------------------------------
+ */
 const {inspect} = require("util");
 const tls = require("tls");
 const sshModule = require("./sshModule");
@@ -26,8 +25,28 @@ const sshUser = configFile["username"];
 const sshPass = configFile["password"];
 const payload = configFile["payload"];
 let firstResponse = false;
-const server = net.createServer().listen(8899, () => {
-    console.log("[INFO] Backend server started!")
+if(configFile["maxTLSVersion"] != "auto") {
+    switch(parseInt(configFile["maxTLSVersion"])) {
+        case 0:
+            console.log("[TLS] Maximum TLS Version: TLSv1");
+            tls.DEFAULT_MAX_VERSION = "TLSv1";
+            break;
+        case 1:
+            console.log("[TLS] Maximum TLS Version: TLSv1.1");
+            tls.DEFAULT_MAX_VERSION = "TLSv1.1";
+            break;
+        case 2:
+            console.log("[TLS] Maximum TLS Version: TLSv1.2");
+            tls.DEFAULT_MAX_VERSION = "TLSv1.2";
+            break;
+        case 3:
+            console.log("[TLS] Maximum TLS Version: TLSv1.3");
+            tls.DEFAULT_MAX_VERSION = "TLSv1.3";
+            break;
+    }
+}
+const server = net.createServer().listen(configFile["backendPort"], () => {
+    console.log("[INFO] Backend server started on port " + configFile["backendPort"]);
 });
 const tlsSocket = tls.connect({
     host: sslHost,
@@ -45,7 +64,7 @@ tlsSocket.on("secureConnect", () => {
     console.log("[TLS] Peer Certificate: " + JSON.stringify(tlsSocket.getPeerCertificate()["subject"]));
     console.log("[TLS] Using cipher: " + tlsSocket.getCipher()["standardName"] + " [" + tlsSocket.getCipher()["version"] + "]");
     //at this point we should have a fully working server so we uuh, proxy i guess?
-    sshModule.connectSSH(sshUser, sshPass);
+    sshModule.connectSSH(sshUser, sshPass, configFile["backendPort"]);
     server.on("connection", (socket) => {
         console.log("[TLS] Sending payload...");
         console.log("[TLS] " + payload);

@@ -1,18 +1,25 @@
 /*
-* /=====================================================\
-* | GuanacoCLInjector v0.1a                             |
-* | Copyright (c) P7COMunications LLC 2021 - PANCHO7532 |
-* \=====================================================/
-* -------------------------------------------
-* [>] Purpose: Main SSH Module
-* -------------------------------------------
+* /=======================================================\
+* | GuanacoCLInjector v0.0.2a                             |
+* | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
+* |=======================================================/
+* |-> Purpose: Main SSH Module
+* ---------------------------------------------------------
 */
 const {inspect} = require("util");
 const sv5 = require("socksv5");
 const ssh2 = require("ssh2");
 const crypto = require("crypto");
 const net = require("net");
+const fs = require("fs");
 let sshReady = false;
+let configFile = {};
+try {
+    configFile = JSON.parse(fs.readFileSync("./config.json").toString());
+} catch(err) {
+    console.log("[ERROR] " + err);
+    process.exit(1);
+}
 const sshConnection = new ssh2.Client();
 sshConnection.on("banner", (message) => {
     console.log("[SSH] Server Message:\r\n" + message);
@@ -26,6 +33,7 @@ sshConnection.on("handshake", (handshake) => {
 sshConnection.on("error", (error) => {
     //some error
     console.log("[SSH-ERR] " + error);
+    sshReady = false;
 });
 sshConnection.on("end", () => {
     //connection was terminated by an foreign force
@@ -76,15 +84,15 @@ const server = sv5.createServer((connectionInfo, accept, deny) => {
     }
     
 });
-server.listen(7788, () => {
+server.listen(configFile["socksPort"], () => {
     console.log("[INFO] Socks server started!");
 });
 server.useAuth(sv5.auth.None());
-module.exports.connectSSH = (user, pass) => {
+module.exports.connectSSH = (user = "username", pass = "password", backendPort = 20000) => {
     //config model
     const configModel = {
         host: "127.0.0.1",
-        port: 8899,
+        port: backendPort,
         username: user,
         password: pass,
         keepaliveInterval: 2500,
@@ -107,3 +115,4 @@ module.exports.connectSSH = (user, pass) => {
     };
     sshConnection.connect(configModel);
 }
+module.exports.sshReady = sshReady;

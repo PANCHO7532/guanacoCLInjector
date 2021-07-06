@@ -85,7 +85,7 @@ const server = sv5.createServer((connectionInfo, accept, deny) => {
     
 });
 server.listen(configFile["socksPort"], () => {
-    console.log("[INFO] Socks server started!");
+    console.log("[INFO] Socks server started on port " + configFile["socksPort"]);
 });
 server.useAuth(sv5.auth.None());
 module.exports.connectSSH = (user = "username", pass = "password", backendPort = 20000) => {

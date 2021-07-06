@@ -30,9 +30,9 @@ let externalConnection = net.createConnection({host: sshHost, port: sshPort});
 externalConnection.on("connect", () => {
     console.log("[TCP] Connected to " + sshHost + ":" + sshPort);
     console.log("[TCP] Sending payload...");
-    console.log("[TCP] " + payload);
+    console.log("[TCP] " + payload.replace(/[\r]/g, "\\r").replace(/[\n]/g, "\\n"));
     sshModule.connectSSH(sshUser, sshPass, configFile["backendPort"]);
-    externalConnection.write(payload);
+    externalConnection.write(payload); //note for later, should i change position of this?
 });
 externalConnection.on("error", (err) => {
     console.log("[EXTCONN] " + err);

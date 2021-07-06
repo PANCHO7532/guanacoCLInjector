@@ -67,7 +67,7 @@ tlsSocket.on("secureConnect", () => {
     sshModule.connectSSH(sshUser, sshPass, configFile["backendPort"]);
     server.on("connection", (socket) => {
         console.log("[TLS] Sending payload...");
-        console.log("[TLS] " + payload);
+        console.log("[TLS] " + payload.replace(/[\r]/g, "\\r").replace(/[\n]/g, "\\n"));
         tlsSocket.write(payload);
         socket.on("data", function(data) {
             tlsSocket.write(data);

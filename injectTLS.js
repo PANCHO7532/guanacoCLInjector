@@ -6,7 +6,6 @@
  * |-> Purpose: SSH/TLS Injection module
  * ---------------------------------------------------------
  */
-const {inspect} = require("util");
 const tls = require("tls");
 const sshModule = require("./sshModule");
 const net = require("net");

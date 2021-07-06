@@ -6,7 +6,6 @@
  * |-> Purpose: Direct SSH Injection module
  * ---------------------------------------------------------
  */
-const {inspect} = require("util");
 const sshModule = require("./sshModule");
 const net = require("net");
 const fs = require("fs");

@@ -6,7 +6,6 @@
  * |-> Purpose: Main SSH Module
  * ---------------------------------------------------------
  */
-const {inspect} = require("util");
 const sv5 = require("socksv5");
 const ssh2 = require("ssh2");
 const crypto = require("crypto");

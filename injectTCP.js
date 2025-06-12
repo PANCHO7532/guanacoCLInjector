@@ -1,12 +1,14 @@
 /*
  * /=======================================================\
- * | GuanacoCLInjector v0.0.2a                             |
+ * | GuanacoCLInjector v1.3.0                              |
  * | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
  * |=======================================================/
  * |-> Purpose: Direct SSH Injection module
  * ---------------------------------------------------------
  */
+"use strict";
 const sshModule = require("./sshModule");
+const payloadParser = require("./payloadParser");
 const net = require("net");
 const fs = require("fs");
 let configFile = {};
@@ -30,8 +32,9 @@ externalConnection.on("connect", () => {
     console.log("[TCP] Connected to " + sshHost + ":" + sshPort);
     console.log("[TCP] Sending payload...");
     console.log("[TCP] " + payload.replace(/[\r]/g, "\\r").replace(/[\n]/g, "\\n"));
+    //externalConnection.write(payload); //note for later, should i change position of this?
+    payloadParser.writePayload(externalConnection, payload, sshHost, sshPort, 0);
     sshModule.connectSSH(sshUser, sshPass, configFile["backendPort"]);
-    externalConnection.write(payload); //note for later, should i change position of this?
 });
 externalConnection.on("error", (err) => {
     console.log("[EXTCONN] " + err);

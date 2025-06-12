@@ -11,6 +11,6 @@
   "license": "AGPL-3.0-or-later",
   "dependencies": {
     "socksv5": "0.0.6",
-    "ssh2": "^1.1.0"
+    "ssh2": "^0.8.9"
   }
 }

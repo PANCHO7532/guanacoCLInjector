@@ -1,11 +1,12 @@
 /*
  * /=======================================================\
- * | GuanacoCLInjector v0.0.2a                             |
+ * | GuanacoCLInjector v1.3.0                              |
  * | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
  * |=======================================================/
  * |-> Purpose: Main SSH Module
  * ---------------------------------------------------------
  */
+"use strict";
 const sv5 = require("socksv5");
 const ssh2 = require("ssh2");
 const crypto = require("crypto");
@@ -87,8 +88,12 @@ server.listen(configFile["socksPort"], () => {
     console.log("[INFO] Socks server started on port " + configFile["socksPort"]);
 });
 server.useAuth(sv5.auth.None());
-module.exports.connectSSH = (user = "username", pass = "password", backendPort = 20000) => {
+// for WinXP compatbility (node v5.12.0)
+//module.exports.connectSSH = (user = "username", pass = "password", backendPort = 20000) => {
+module.exports.connectSSH = function(user, pass, backendPort) {
     //config model
+    if(!user || !pass) { console.log("[ERROR] User and password must be set."); process.exit(1); }
+    if(!backendPort) { console.log("[ERROR] Backend port must be set."); process.exit(1); }
     const configModel = {
         host: "127.0.0.1",
         port: backendPort,
@@ -96,6 +101,7 @@ module.exports.connectSSH = (user = "username", pass = "password", backendPort =
         password: pass,
         keepaliveInterval: 2500,
         keepaliveCountMax: 10000,
+        hostHash: "sha512", // >1.x ssh2 seems to not care about this property, however while using ancient versions of ssh2 then it seems to care suddenly. Feel free to remove it if you're using modern versions of ssh2
         hostVerifier: (hashedkey) => {
             //raw key in buffer that we convert to an md5 fingerprint
             //console.log(this.remoteIdentRaw);
@@ -108,6 +114,10 @@ module.exports.connectSSH = (user = "username", pass = "password", backendPort =
                 //ladies and gentelemans, we got 'em
                 let sshVer = "";
                 sshVer += messages.replace("Remote ident: ", "").replace(/[']/g, "");
+                if(sshVer.indexOf("DEBUG: ") != -1) {
+                    // specific case for ssh2 < 1.0?
+					sshVer = sshVer.replace("DEBUG: ", "").replace(/[']/g, "");
+				}
                 console.log("[SSH] " + sshVer);
             }
         }

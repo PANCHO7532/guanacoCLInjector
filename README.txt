@@ -19,4 +19,10 @@ What are config.json options?
 - maxTLSVersion: TLS Version for TLS Connection method, this goes on a range of 0 to 3, where 0 is TLSv1.0 and 3 is TLSv1.3, by default, the script will attempt to connect with the most up-to-date TLS Protocol (auto).
 
 While making an issue think first that this is a beta project, it may change at anytime.
-This project don't support placeholders in the payload yet ([crlf], [split], [host_port], etc)
+This project supports placeholders in the payload ([crlf], [split], [host_port], etc)
+
+For XP users:
+A) Replace package.json with package-xp.json
+B) Delete node_modules folder if existent
+C) Re-Follow instructions from step 0
+D) If install-dep.bat fails, open an Command Line prompt and navigate to the folder, then execute "npm update --save"

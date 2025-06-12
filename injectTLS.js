@@ -1,12 +1,14 @@
 /*
  * /=======================================================\
- * | GuanacoCLInjector v0.0.2a                             |
+ * | GuanacoCLInjector v1.3.0                              |
  * | Copyright (c) P7COMunications LLC 2021 - PANCHO7532   |
  * |=======================================================/
  * |-> Purpose: SSH/TLS Injection module
  * ---------------------------------------------------------
  */
+"use strict";
 const tls = require("tls");
+const payloadParser = require("./payloadParser");
 const sshModule = require("./sshModule");
 const net = require("net");
 const fs = require("fs");
@@ -67,7 +69,8 @@ tlsSocket.on("secureConnect", () => {
     server.on("connection", (socket) => {
         console.log("[TLS] Sending payload...");
         console.log("[TLS] " + payload.replace(/[\r]/g, "\\r").replace(/[\n]/g, "\\n"));
-        tlsSocket.write(payload);
+        payloadParser.writePayload(tlsSocket, payload, sslHost, sslPort, 1);
+        // tlsSocket.write(payload);
         socket.on("data", function(data) {
             tlsSocket.write(data);
         });

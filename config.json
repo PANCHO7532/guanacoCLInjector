@@ -1,10 +1,10 @@
 {
-    "host": "yourhost.com",
-    "port": 44444,
-    "username": "username",
-    "password": "P@ssw0rD!",
-    "sni": "host.com",
-    "payload": "GET / HTTP/1.1\r\nHost: example.com\r\nConnection: Keep-Alive\r\nUser-Agent: exampleUAxD/1.0\r\n\r\n",
+    "host": "example.com",
+    "port": 443,
+    "username": "root",
+    "password": "password",
+    "sni": "example.com",
+    "payload": "GET / HTTP/1.1\r\nHost: example.com\r\nConnection: Keep-Alive\r\nUser-Agent: exampleUA/1.0\r\n\r\n",
     "backendPort": 20000,
     "socksPort": 1080,
     "maxTLSVersion": "auto"
